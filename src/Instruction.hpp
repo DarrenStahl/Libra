@@ -4,7 +4,7 @@
 |
 |  Creation Date: 25-09-2012
 |
-|  Last Modified: Sun, Oct  7, 2012 12:41:29 PM
+|  Last Modified: Thu, Oct 18, 2012 10:30:26 PM
 |
 |  Created By: Robert Nelson
 |
@@ -14,11 +14,16 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "Prefix.hpp"
 #include "Operand.hpp"
 
 #define GETINST(len) inst.insert(0, (char*)memLoc, len)
+
+#ifdef WIN32
+#define snprintf sprintf_s
+#endif
 
 class Processor;
 
@@ -61,9 +66,24 @@ class Instruction {
 		void SetOperand(const unsigned int operand, Operand* newOp);
 
 		virtual ~Instruction();
+		
+		static bool Parity(unsigned int val);
+		static bool OverflowAdd(unsigned int dst, unsigned int src, unsigned int size);
+		static bool OverflowSub(unsigned int dst, unsigned int src, unsigned int size);
+		static bool AdjustAdd(unsigned int op1, unsigned int op2);
+		static bool AdjustSub(unsigned int op1, unsigned int op2);
+
+		inline std::string GetDisasm() { return mText; }
+
+		void AddLengthToDisasm() {
+			std::stringstream ss;
+			ss << mInst.size();
+			mText += " (" + ss.str() + ")";
+		}
 
 	protected:
 		Instruction();
+		Instruction(Prefix* pre, std::string text, std::string inst, int op);
 
 		bool mValid;
 		int mOpcode;
@@ -75,6 +95,6 @@ class Instruction {
 
 		static std::vector<PCreateInst> AllInstructions;
 
-		Operand* mOperands[2];
+		Operand* mOperands[4];
 
 };

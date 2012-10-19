@@ -4,7 +4,7 @@
 |
 |  Creation Date: 06-10-2012
 |
-|  Last Modified: Sun, Oct  7, 2012 12:44:47 PM
+|  Last Modified: Fri, Oct 12, 2012  5:23:59 PM
 |
 |  Created By: Robert Nelson
 |
@@ -61,6 +61,9 @@ Instruction* Test::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 		case TEST_MOD8_IMM8:
 		case TEST_MOD16_IMM16:
 		{
+			if(((*(opLoc + 1) & 0x38) >> 3) != TEST_SUB_OPCODE)
+				return 0;
+
 			unsigned int size = (*opLoc == TEST_MOD8_IMM8 ? 1 : 2);
 
 			unsigned int val = (int)*(opLoc + 1);
@@ -72,7 +75,7 @@ Instruction* Test::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 			Operand* src = new ImmediateOperand(val, size);
 			Operand* dst = ModrmOperand::GetModrmOperand(proc, opLoc, ModrmOperand::MOD, size);
 
-			GETINST(preSize + 1 + size + dst->GetBytecodeLen());
+			GETINST(preSize + 2 + size + dst->GetBytecodeLen());
 			newTest = new Test(pre, buf, inst, (unsigned char)*opLoc);
 			newTest->SetOperand(Operand::SRC, src);
 			newTest->SetOperand(Operand::DST, dst);
@@ -86,7 +89,7 @@ Instruction* Test::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 			Operand* src = ModrmOperand::GetModrmOperand(proc, opLoc, ModrmOperand::REG, size);
 			Operand* dst = ModrmOperand::GetModrmOperand(proc, opLoc, ModrmOperand::MOD, size);
 
-			GETINST(preSize + 1 + dst->GetBytecodeLen() + src->GetBytecodeLen());
+			GETINST(preSize + 2 + dst->GetBytecodeLen() + src->GetBytecodeLen());
 			newTest = new Test(pre, buf, inst, (unsigned char)*opLoc);
 			newTest->SetOperand(Operand::SRC, src);
 			newTest->SetOperand(Operand::DST, dst);
@@ -107,13 +110,9 @@ int Test::Execute(Processor* proc) {
 	unsigned int val = mOperands[Operand::SRC]->GetValue() & mOperands[Operand::DST]->GetValue();
 	unsigned int sign = mOperands[Operand::DST]->GetBitmask() == 0xFF ? 0x80 : 0x8000;
 
-	unsigned int parity = val;
-	parity ^= parity >> 16;
-	parity ^= parity >> 8;
-	parity ^= parity >> 4;
-	parity &= 0x0f;
-	
-	proc->SetFlag(FLAGS_PF, (0x6996 >> parity) & 1);
+	proc->SetFlag(FLAGS_CF, false);
+	proc->SetFlag(FLAGS_OF, false);
+	proc->SetFlag(FLAGS_PF, Parity(val));
 	proc->SetFlag(FLAGS_ZF, val == 0);
 	proc->SetFlag(FLAGS_SF, val >= sign);
 

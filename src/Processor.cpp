@@ -4,7 +4,7 @@
 |
 |  Creation Date: 26-09-2012
 |
-|  Last Modified: Thu, Oct  4, 2012  6:43:14 PM
+|  Last Modified: Thu, Oct 18, 2012 10:57:12 PM
 |
 |  Created By: Robert Nelson
 |
@@ -44,6 +44,9 @@ int Processor::Step() {
 	if(inst && inst->IsValid()) {
 		//Increment IP
 		SetRegister(REG_IP, GetRegister(REG_IP) + inst->GetLength());
+		inst->AddLengthToDisasm();
+
+		std::cout << inst->GetDisasm() << std::endl;
 
 		//Execute
 		if(inst->Execute(this)) {
@@ -115,7 +118,7 @@ unsigned int Processor::GetRegisterHigh(eRegisters reg) {
 		return 0;
 	}
 
-	return mRegisters[reg].GetValue() & 0xFF00;
+	return (mRegisters[reg].GetValue() & 0xFF00) >> 8;
 };
 
 void Processor::SetRegisterLow(eRegisters reg, unsigned int val) {
@@ -141,6 +144,25 @@ unsigned int Processor::GetMemory(unsigned int addr, unsigned int size) {
 void Processor::SetMemory(unsigned int addr, unsigned int size, unsigned int val) {
 
 	memcpy(mMem + (addr % 0x10000), &val, size);
+}
+
+void Processor::PushRegister(eRegisters reg) {
+	SetRegister(REG_SP, (GetRegister(REG_SP) - 2) & 0xFFFF);
+	SetMemory(GetRegister(REG_SP) + (GetRegister(REG_SS) << 4), 2, GetRegister(reg));
+}
+
+void Processor::PushValue(unsigned int val) {
+	SetRegister(REG_SP, (GetRegister(REG_SP) - 2) & 0xFFFF);
+	SetMemory(GetRegister(REG_SP) + (GetRegister(REG_SS) << 4), 2, val & 0xFFFF);
+}
+
+void Processor::PopRegister(eRegisters reg) {
+	SetRegister(reg, GetMemory(GetRegister(REG_SP) + (GetRegister(REG_SS) << 4), 2));
+	SetRegister(REG_SP, (GetRegister(REG_SP) + 2) & 0xFFFF);
+}
+
+void Processor::PopSize(unsigned int size) {
+	SetRegister(REG_SP, (GetRegister(REG_SP) + size) & 0xFFFF);
 }
 
 void Processor::ProcDump() {

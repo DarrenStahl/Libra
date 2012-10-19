@@ -4,7 +4,7 @@
 |
 |  Creation Date: 26-09-2012
 |
-|  Last Modified: Sat, Oct  6, 2012 12:00:52 PM
+|  Last Modified: Thu, Oct 18, 2012  9:52:41 PM
 |
 |  Created By: Robert Nelson
 |
@@ -55,7 +55,7 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 	//Switch for the different valid opcodes
 	switch(*opLoc) {
 		case ADD_AL_BYTE:
-			sprintf(buf, "ADD AL, 0x%02X", (int)*(opLoc + 1));
+			snprintf(buf, 65, "ADD AL, 0x%02X", (int)*(opLoc + 1));
 
 			inst.insert(0, (char*)memLoc, prefixLen + 2);	
 
@@ -68,7 +68,7 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 			tInt1 = (unsigned char)*(opLoc + 1);
 			tInt1 |= (((unsigned char)*(opLoc + 2)) << 8);
 
-			sprintf(buf, "ADD AX, 0x%04X", tInt1);
+			snprintf(buf, 65, "ADD AX, 0x%04X", tInt1);
 
 			inst.insert(0, (char*)memLoc, prefixLen + 3);
 
@@ -100,9 +100,9 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 				}
 
 				if(immSize == 1)
-					sprintf(buf, "ADD %s, 0x%02X", "", tInt1);
+					snprintf(buf, 65, "ADD %s, 0x%02X", dst->GetDisasm().c_str(), tInt1);
 				else
-					sprintf(buf, "ADD %s, 0x%04X", "", tInt1);
+					snprintf(buf, 65, "ADD %s, 0x%04X", dst->GetDisasm().c_str(), tInt1);
 
 				inst.insert(0, (char*)memLoc, prefixLen + 2 + immSize + dst->GetBytecodeLen() - (*opLoc == GRP1_ADD_MOD_SIMM8 ? 1 : 0));
 				newAdd = new Add(prefix, buf, inst, (unsigned char)*opLoc);
@@ -120,7 +120,7 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 						proc, opLoc, ModrmOperand::MOD, size);
 				Operand* src = ModrmOperand::GetModrmOperand(
 						proc, opLoc, ModrmOperand::REG, size);
-				sprintf(buf, "ADD %s, %s", "", "");
+				snprintf(buf, 65, "ADD %s, %s", dst->GetDisasm().c_str(), src->GetDisasm().c_str());
 				inst.insert(0, (char*)memLoc, prefixLen + 2 + dst->GetBytecodeLen() + src->GetBytecodeLen());
 				newAdd = new Add(prefix, buf, inst, (unsigned char)*opLoc);
 				newAdd->SetOperand(Operand::SRC, src);
@@ -139,7 +139,7 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 						proc, opLoc, ModrmOperand::REG, size);
 				Operand* src = ModrmOperand::GetModrmOperand(
 						proc, opLoc, ModrmOperand::MOD, size);
-				sprintf(buf, "ADD %s, %s", "", "");
+				snprintf(buf, 65, "ADD %s, %s", dst->GetDisasm().c_str(), src->GetDisasm().c_str());
 				inst.insert(0, (char*)memLoc, prefixLen + 2 + dst->GetBytecodeLen() + src->GetBytecodeLen());
 				newAdd = new Add(prefix, buf, inst, (unsigned char)*opLoc);
 				newAdd->SetOperand(Operand::SRC, src);
@@ -160,28 +160,22 @@ Instruction* Add::CreateInstruction(unsigned char* memLoc, Processor* proc) {
 
 int Add::Execute(Processor* proc) {
 
-	unsigned int parity = 0;
-
 	Operand* dst = mOperands[Operand::DST];
 	Operand* src = mOperands[Operand::SRC];
 
-	unsigned int newVal = dst->GetValue();
+	unsigned int dstVal = dst->GetValue();
 	unsigned int srcVal = src->GetValue();
-	newVal += srcVal;
+	unsigned int newVal = dstVal + srcVal;
+	unsigned int sign = dst->GetBitmask() == 0xFF ? 0x80 : 0x8000;
 	proc->SetFlag(FLAGS_CF, newVal > dst->GetBitmask());
 	newVal &= dst->GetBitmask();
 
-	proc->SetFlag(FLAGS_OF, newVal >= 0x80 && dst->GetValue() < 0x80);
-	proc->SetFlag(FLAGS_SF, newVal >= 0x80);
+	proc->SetFlag(FLAGS_OF, OverflowAdd(dstVal, srcVal, sign == 0x80 ? 1 : 2));
+	proc->SetFlag(FLAGS_SF, newVal >= sign);
 	proc->SetFlag(FLAGS_ZF, newVal == 0x00);
-	proc->SetFlag(FLAGS_AF, (newVal & ~0x0F) != 0);
+	proc->SetFlag(FLAGS_AF, AdjustAdd(dstVal, srcVal));
 
-	parity = newVal;
-	parity ^= parity >> 16;
-	parity ^= parity >> 8;
-	parity ^= parity >> 4;
-	parity &= 0x0f;
-	proc->SetFlag(FLAGS_PF, (0x6996 >> parity) & 1);
+	proc->SetFlag(FLAGS_PF, Parity(newVal));
 
 	dst->SetValue(newVal);
 

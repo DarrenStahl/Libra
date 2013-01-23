@@ -69,8 +69,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\AddressOperand.cpp" />
+    <ClCompile Include="..\src\Breakpoint.cpp" />
     <ClCompile Include="..\src\Instruction.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Memory.cpp" />
+    <ClCompile Include="..\src\MemWnd.cpp" />
     <ClCompile Include="..\src\ModrmOperand.cpp" />
     <ClCompile Include="..\src\opcodes\Aaa.cpp" />
     <ClCompile Include="..\src\opcodes\Aad.cpp" />
@@ -113,14 +116,19 @@
     <ClCompile Include="..\src\peripherals\Screen.cpp" />
     <ClCompile Include="..\src\Prefix.cpp" />
     <ClCompile Include="..\src\Processor.cpp" />
+    <ClCompile Include="..\src\QMemModel.cpp" />
     <ClCompile Include="..\src\RegisterOperand.cpp" />
     <ClCompile Include="..\src\VM.cpp" />
+    <ClCompile Include="..\src\VMWorker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\AddressOperand.hpp" />
+    <ClInclude Include="..\src\Breakpoint.hpp" />
     <ClInclude Include="..\src\ImmediateOperand.hpp" />
     <ClInclude Include="..\src\Instruction.hpp" />
     <ClInclude Include="..\src\IPeripheral.hpp" />
+    <ClInclude Include="..\src\Memory.hpp" />
+    <ClInclude Include="..\src\MemWnd.hpp" />
     <ClInclude Include="..\src\ModrmOperand.hpp" />
     <ClInclude Include="..\src\opcodes\Aaa.hpp" />
     <ClInclude Include="..\src\opcodes\Aad.hpp" />
@@ -167,9 +175,12 @@
     <ClInclude Include="..\src\peripherals\Screen.hpp" />
     <ClInclude Include="..\src\Prefix.hpp" />
     <ClInclude Include="..\src\Processor.hpp" />
+    <ClInclude Include="..\src\QMemModel.hpp" />
     <ClInclude Include="..\src\Register.hpp" />
     <ClInclude Include="..\src\RegisterOperand.hpp" />
+    <ClInclude Include="..\src\VirgoInstruction.hpp" />
     <ClInclude Include="..\src\VM.hpp" />
+    <ClInclude Include="..\src\VMWorker.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B53112FC-5DEC-36DE-80F7-9AA0966F05A7}</ProjectGuid>
+    <RootNamespace>libra-qt</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>libra-qt</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>libra-qt</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libra-qt</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libra-qt</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\Qt\4.8.2\include\QtCore";"..\..\..\..\Qt\4.8.2\include\QtGui";"..\..\..\..\Qt\4.8.2\include";"..\..\..\..\Qt\4.8.2\include\ActiveQt";"debug";".";"..\src";".";..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>c:\Qt\4.8.2\lib\qtmaind.lib;c:\Qt\4.8.2\lib\QtGuid4.lib;c:\Qt\4.8.2\lib\QtCored4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>c:\Qt\4.8.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\libra-qt.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\Qt\4.8.2\include\QtCore";"..\..\..\..\Qt\4.8.2\include\QtGui";"..\..\..\..\Qt\4.8.2\include";"..\..\..\..\Qt\4.8.2\include\ActiveQt";"release";".";"..\src";".";..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>c:\Qt\4.8.2\lib\qtmain.lib;c:\Qt\4.8.2\lib\QtGui4.lib;c:\Qt\4.8.2\lib\QtCore4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>c:\Qt\4.8.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\libra-qt.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\opcodes\Aaa.cpp" />
+    <ClCompile Include="..\src\opcodes\Aad.cpp" />
+    <ClCompile Include="..\src\opcodes\Aam.cpp" />
+    <ClCompile Include="..\src\opcodes\Aas.cpp" />
+    <ClCompile Include="..\src\opcodes\Adc.cpp" />
+    <ClCompile Include="..\src\opcodes\Add.cpp" />
+    <ClCompile Include="..\src\AddressOperand.cpp" />
+    <ClCompile Include="..\src\opcodes\And.cpp" />
+    <ClCompile Include="..\src\Breakpoint.cpp" />
+    <ClCompile Include="..\src\opcodes\CLSTX.cpp" />
+    <ClCompile Include="..\src\opcodes\Call.cpp" />
+    <ClCompile Include="..\src\opcodes\Cbw.cpp" />
+    <ClCompile Include="..\src\opcodes\Cmp.cpp" />
+    <ClCompile Include="..\src\opcodes\CmpsX.cpp" />
+    <ClCompile Include="..\src\opcodes\Cwd.cpp" />
+    <ClCompile Include="..\src\opcodes\Div.cpp" />
+    <ClCompile Include="..\src\opcodes\IDiv.cpp" />
+    <ClCompile Include="..\src\opcodes\IMul.cpp" />
+    <ClCompile Include="..\src\opcodes\In.cpp" />
+    <ClCompile Include="..\src\opcodes\IncDec.cpp" />
+    <ClCompile Include="..\src\Instruction.cpp" />
+    <ClCompile Include="..\src\opcodes\Jcc.cpp" />
+    <ClCompile Include="..\src\opcodes\Jmp.cpp" />
+    <ClCompile Include="..\src\opcodes\Lahf.cpp" />
+    <ClCompile Include="..\src\opcodes\Lea.cpp" />
+    <ClCompile Include="..\src\opcodes\Lxs.cpp" />
+    <ClCompile Include="..\src\MemWnd.cpp" />
+    <ClCompile Include="..\src\Memory.cpp" />
+    <ClCompile Include="..\src\ModrmOperand.cpp" />
+    <ClCompile Include="..\src\opcodes\Mov.cpp" />
+    <ClCompile Include="..\src\opcodes\Mul.cpp" />
+    <ClCompile Include="..\src\opcodes\Neg.cpp" />
+    <ClCompile Include="..\src\opcodes\Not.cpp" />
+    <ClCompile Include="..\src\opcodes\Or.cpp" />
+    <ClCompile Include="..\src\opcodes\Out.cpp" />
+    <ClCompile Include="..\src\opcodes\Pop.cpp" />
+    <ClCompile Include="..\src\Prefix.cpp" />
+    <ClCompile Include="..\src\Processor.cpp" />
+    <ClCompile Include="..\src\opcodes\Push.cpp" />
+    <ClCompile Include="..\src\QMemModel.cpp" />
+    <ClCompile Include="..\src\RegisterOperand.cpp" />
+    <ClCompile Include="..\src\opcodes\Ret.cpp" />
+    <ClCompile Include="..\src\opcodes\Rot.cpp" />
+    <ClCompile Include="..\src\opcodes\Sahf.cpp" />
+    <ClCompile Include="..\src\peripherals\Screen.cpp" />
+    <ClCompile Include="..\src\opcodes\Sub.cpp" />
+    <ClCompile Include="..\src\opcodes\Sxx.cpp" />
+    <ClCompile Include="..\src\opcodes\Test.cpp" />
+    <ClCompile Include="..\src\VM.cpp" />
+    <ClCompile Include="..\src\VMWorker.cpp" />
+    <ClCompile Include="..\src\opcodes\Xor.cpp" />
+    <ClCompile Include="..\src\main.cpp">
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Speed</FavorSizeOrSpeed>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\opcodes\Aaa.hpp" />
+    <ClInclude Include="..\src\opcodes\Aad.hpp" />
+    <ClInclude Include="..\src\opcodes\Aam.hpp" />
+    <ClInclude Include="..\src\opcodes\Aas.hpp" />
+    <ClInclude Include="..\src\opcodes\Adc.hpp" />
+    <ClInclude Include="..\src\opcodes\Add.hpp" />
+    <ClInclude Include="..\src\AddressOperand.hpp" />
+    <ClInclude Include="..\src\opcodes\AllOpcodes.hpp" />
+    <ClInclude Include="..\src\peripherals\AllPeripherals.hpp" />
+    <ClInclude Include="..\src\opcodes\And.hpp" />
+    <ClInclude Include="..\src\Breakpoint.hpp" />
+    <ClInclude Include="..\src\opcodes\CLSTX.hpp" />
+    <ClInclude Include="..\src\opcodes\Call.hpp" />
+    <ClInclude Include="..\src\opcodes\Cbw.hpp" />
+    <ClInclude Include="..\src\opcodes\Cmp.hpp" />
+    <ClInclude Include="..\src\opcodes\CmpsX.hpp" />
+    <ClInclude Include="..\src\opcodes\Cwd.hpp" />
+    <ClInclude Include="..\src\opcodes\Div.hpp" />
+    <ClInclude Include="..\src\opcodes\IDiv.hpp" />
+    <ClInclude Include="..\src\opcodes\IMul.hpp" />
+    <ClInclude Include="..\src\IPeripheral.hpp" />
+    <ClInclude Include="..\src\ImmediateOperand.hpp" />
+    <ClInclude Include="..\src\opcodes\In.hpp" />
+    <ClInclude Include="..\src\opcodes\IncDec.hpp" />
+    <ClInclude Include="..\src\Instruction.hpp" />
+    <ClInclude Include="..\src\opcodes\Jcc.hpp" />
+    <ClInclude Include="..\src\opcodes\Jmp.hpp" />
+    <ClInclude Include="..\src\opcodes\Lahf.hpp" />
+    <ClInclude Include="..\src\opcodes\Lea.hpp" />
+    <ClInclude Include="..\src\opcodes\Lxs.hpp" />
+    <CustomBuild Include="..\src\MemWnd.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\src\MemWnd.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"debug" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\MemWnd.hpp -o debug\moc_MemWnd.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\src\MemWnd.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_MemWnd.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\src\MemWnd.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"release" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\MemWnd.hpp -o release\moc_MemWnd.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\src\MemWnd.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_MemWnd.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\src\Memory.hpp" />
+    <ClInclude Include="..\src\ModrmOperand.hpp" />
+    <ClInclude Include="..\src\opcodes\Mov.hpp" />
+    <ClInclude Include="..\src\opcodes\Mul.hpp" />
+    <ClInclude Include="..\src\opcodes\Neg.hpp" />
+    <ClInclude Include="..\src\opcodes\Not.hpp" />
+    <ClInclude Include="..\src\Operand.hpp" />
+    <ClInclude Include="..\src\opcodes\Or.hpp" />
+    <ClInclude Include="..\src\opcodes\Out.hpp" />
+    <ClInclude Include="..\src\opcodes\Pop.hpp" />
+    <ClInclude Include="..\src\Prefix.hpp" />
+    <ClInclude Include="..\src\Processor.hpp" />
+    <ClInclude Include="..\src\opcodes\Push.hpp" />
+    <CustomBuild Include="..\src\QMemModel.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\src\QMemModel.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"debug" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\QMemModel.hpp -o debug\moc_QMemModel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\src\QMemModel.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_QMemModel.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\src\QMemModel.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"release" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\QMemModel.hpp -o release\moc_QMemModel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\src\QMemModel.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_QMemModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\src\Register.hpp" />
+    <ClInclude Include="..\src\RegisterOperand.hpp" />
+    <ClInclude Include="..\src\opcodes\Ret.hpp" />
+    <ClInclude Include="..\src\opcodes\Rot.hpp" />
+    <ClInclude Include="..\src\opcodes\Sahf.hpp" />
+    <ClInclude Include="..\src\peripherals\Screen.hpp" />
+    <ClInclude Include="..\src\opcodes\Sub.hpp" />
+    <ClInclude Include="..\src\opcodes\Sxx.hpp" />
+    <ClInclude Include="..\src\opcodes\Test.hpp" />
+    <ClInclude Include="..\src\VM.hpp" />
+    <CustomBuild Include="..\src\VMWorker.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\src\VMWorker.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"debug" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\VMWorker.hpp -o debug\moc_VMWorker.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\src\VMWorker.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_VMWorker.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\src\VMWorker.hpp;C:\Qt\4.8.2\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\4.8.2\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I"..\..\..\..\Qt\4.8.2\include\QtCore" -I"..\..\..\..\Qt\4.8.2\include\QtGui" -I"..\..\..\..\Qt\4.8.2\include" -I"..\..\..\..\Qt\4.8.2\include\ActiveQt" -I"release" -I"." -I"..\src" -I"." -I..\..\..\..\Qt\4.8.2\mkspecs\win32-msvc2010 -D_MSC_VER=1600 -DWIN32 ..\src\VMWorker.hpp -o release\moc_VMWorker.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\src\VMWorker.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_VMWorker.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\src\VirgoInstruction.hpp" />
+    <ClInclude Include="..\src\opcodes\Xor.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_MemWnd.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_MemWnd.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_QMemModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_QMemModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_VMWorker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_VMWorker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\qrc_Resources.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\qrc_Resources.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="ui_MemWnd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\src\MemWnd.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\src\MemWnd.ui;C:\Qt\4.8.2\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\4.8.2\bin\uic.exe ..\src\MemWnd.ui -o ui_MemWnd.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC ..\src\MemWnd.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui_MemWnd.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\src\MemWnd.ui;C:\Qt\4.8.2\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\4.8.2\bin\uic.exe ..\src\MemWnd.ui -o ui_MemWnd.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC ..\src\MemWnd.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui_MemWnd.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\src\Resources.qrc">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\res\StepInto24.ico;..\res\StepOut24.ico;..\res\StepOver24.ico;..\res\kill24.ico;..\res\openproject24.ico;..\res\pause24.ico;..\res\runproject24.ico;..\res\testproject24.ico;..\src\Resources.qrc;C:\Qt\4.8.2\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\4.8.2\bin\rcc.exe -name Resources ..\src\Resources.qrc -o debug\qrc_Resources.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">RCC ..\src\Resources.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\qrc_Resources.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\res\StepInto24.ico;..\res\StepOut24.ico;..\res\StepOver24.ico;..\res\kill24.ico;..\res\openproject24.ico;..\res\pause24.ico;..\res\runproject24.ico;..\res\testproject24.ico;..\src\Resources.qrc;C:\Qt\4.8.2\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\4.8.2\bin\rcc.exe -name Resources ..\src\Resources.qrc -o release\qrc_Resources.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC ..\src\Resources.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\qrc_Resources.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="..\res\StepInto24.ico" />
+    <None Include="..\res\StepOut24.ico" />
+    <None Include="..\res\StepOver24.ico" />
+    <None Include="..\res\kill24.ico" />
+    <None Include="..\res\openproject24.ico" />
+    <None Include="..\res\pause24.ico" />
+    <None Include="..\res\runproject24.ico" />
+    <None Include="..\res\testproject24.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

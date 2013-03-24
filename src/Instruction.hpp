@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <map>
 
 #include "Memory.hpp"
 #include "Prefix.hpp"
@@ -35,6 +36,8 @@ class Instruction {
 		//Create an instruction from a memory location
 		static Instruction* ReadInstruction(Memory::MemoryOffset& memLoc, Processor* proc);
 
+		static Instruction* CreateSubcodeInstruction(Memory::MemoryOffset& memLoc, Processor*);
+
 		//Register the mnemonics with the ReadInstruction function
 		static void InitializeOpcodes();
 
@@ -51,7 +54,7 @@ class Instruction {
 		inline std::string GetInstruction() { return mInst; }
 
 		//returns the number of bytes in the instruction
-		inline unsigned int GetLength() { return mInst.size(); }
+		inline size_t GetLength() { return mInst.size(); }
 
 		//returns the reg/opcode field in modrm
 		inline unsigned char GetRegOpcode() { return (modrm & 0x38) >> 3; }
@@ -66,12 +69,13 @@ class Instruction {
 		typedef Instruction* (*PCreateInst)(Memory::MemoryOffset&, Processor*);
 
 		void SetOperand(const unsigned int operand, Operand* newOp);
+		Operand* GetOperand(const unsigned int num) const { if(num < 4) { return mOperands[num]; } return 0; }
 
 		void SetAddress(const unsigned int addr) { mAddress = addr; }
 		unsigned int GetAddress() const { return mAddress; }
 
 		virtual ~Instruction();
-		
+
 		static bool Parity(unsigned int val);
 		static bool OverflowAdd(unsigned int dst, unsigned int src, unsigned int size);
 		static bool OverflowSub(unsigned int dst, unsigned int src, unsigned int size);
@@ -87,11 +91,12 @@ class Instruction {
 		}
 
 		enum eExecuteRetCode {
-			SUCCESS		=  0,
-			INVALID_ARGS 	= -1,
-			RET_CALLED	=  1,
-			CALL_CALLED	=  2,
-			RES_BREAKPOINT = 3
+			INVALID_ARGS = -1,
+			SUCCESS,
+			RET_CALLED,
+			CALL_CALLED,
+			RES_BREAKPOINT,
+			PERIPH_WRITE,
 		};
 
 
@@ -107,7 +112,8 @@ class Instruction {
 
 		Prefix* mPrefix;
 
-		static std::vector<PCreateInst> AllInstructions;
+		static PCreateInst AllInstructions[0x100][9];
+		static std::map<unsigned int, PCreateInst> SubcodeMap;
 
 		Operand* mOperands[4];
 		unsigned int mAddress;

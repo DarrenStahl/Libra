@@ -20,6 +20,7 @@
 #include "Breakpoint.hpp"
 
 class Instruction;
+class QTimer;
 
 class VM {
 
@@ -39,23 +40,31 @@ class VM {
 		unsigned int GetInstructionAddr(unsigned int index) const;
 		unsigned int GetInstructionLen(unsigned int index) const;
 		unsigned int CalcInstructionLen();
-		unsigned int GetNumInstructions() { return mInstructions.size(); }
+		size_t GetNumInstructions() { return mInstructions.size(); }
 		const std::vector<IPeripheral*> & GetDevices() { return mProc.GetDevices(); }
 		const Processor & GetProc() { return mProc; }
 		unsigned char GetMemory(unsigned int addr);
 		const unsigned char* GetMemPtr() const { return mMem.getPtr(); }
 
-		inline void AddBreakpoint(Breakpoint* bp) { mBreakpoints.push_back(bp); }
+		void AddBreakpoint(Breakpoint* bp);
+		void RemoveBreakpoint(unsigned int addr);
+		Breakpoint* FindBreakpoint(unsigned int addr);
+		const std::vector<Breakpoint*> & GetBreakpoints() { return mBreakpoints; }
+
 		inline void notifyReadCallbacks() { mMem.notifyReadCallbacks(); }
 		inline void notifyWriteCallbacks() { mMem.notifyWriteCallbacks(); }
 
+		void SetTimer(QTimer* timer) { mProc.SetTimer(timer); }
+
 		const static unsigned int MEM_SIZE = 0x10000;
+		const static unsigned int TEXT_LEN = 0x400;
 
 		const static int VM_SUCCESS	= 0x00;
 		const static int VM_ERR_FOPEN	= 0x01;
 		const static int VM_ERR_FREAD	= 0x02;
 		const static int VM_ERR_BIG_FILE = 0x03;
 		const static int VM_ERR_CORRUPT = 0x04;
+		const static int VM_ERR_OVERFLOW = 0x05;
 
 		const static int VM_BREAKPOINT = 0x03;
 
@@ -70,5 +79,5 @@ class VM {
 
 		std::vector<Instruction*> mInstructions;
 		std::vector<Breakpoint*> mBreakpoints;
-		
+
 };

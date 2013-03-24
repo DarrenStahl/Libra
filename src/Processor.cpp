@@ -12,13 +12,20 @@
 
 #include "Processor.hpp"
 #include "peripherals/AllPeripherals.hpp"
+#include "IPeripheral.hpp"
 
 #include <iostream>
 #include <cstring>
 #include <cstdio>
 
-Processor::Processor(Memory& mem): mMem(mem), mLastPort(0xFFFFFFFF), mLastDevice(0) {
+Processor::Processor(Memory& mem): mMem(mem), mNextInst(0), mLastPort(0xFFFFFFFF), mLastDevice(0), mInterrupt(-1), mHalt(false) {
 
+}
+
+Processor::~Processor() {
+	for(size_t i = 0; i < mDevices.size(); i++) {
+		delete mDevices[i];
+	}
 }
 
 //Allows the starting address to be changed
@@ -41,8 +48,15 @@ int Processor::Initialize(unsigned int startAddr) {
 	SetRegister(REG_DI, 0x0000);
 	SetRegister(REG_FLAGS, 0x0000);
 	SetRegister(REG_IP, startAddr);
+	mHalt = false;
+
+	mInterrupt = -1;
 
 	_InitializeDevices();
+
+	//Fetch first instruction
+	Memory::MemoryOffset curMem = mMem.getOffset(GetRegister(REG_IP));
+	mNextInst = Instruction::ReadInstruction(curMem, this);
 
 	return PROC_SUCCESS;
 
@@ -58,33 +72,61 @@ void Processor::_InitializeDevices() {
 		delete mDevices[i];
 	}
 	mDevices.clear();
+	mLastPort = 0xFFFFFFFF;
+	mLastDevice = 0;
 
 	mDevices.push_back(new Screen());
+	mDevices.push_back(new Keyboard(const_cast<Processor*>(this)));
+	mDevices.push_back(new Timer(const_cast<Processor*>(this)));
 }
 
 //Execute a single instruction
 int Processor::Step() {
-    int retVal = PROC_SUCCESS;
+	int retVal = PROC_SUCCESS;
 
-	//Fetch
-	Memory::MemoryOffset curMem = mMem.getOffset(GetRegister(REG_IP));
-	Instruction* inst = Instruction::ReadInstruction(curMem, this);
+	for(size_t i = 0; i < mDevices.size(); i++) {
+		mDevices[i]->Update();
+	}
+
+	//Check for interrupts
+	if(GetFlag(FLAGS_IF) && mInterrupt >= 0 && mInterrupt <= 255) {
+		PushRegister(REG_FLAGS);
+		SetFlag(FLAGS_IF, false);
+		SetFlag(FLAGS_TF, false);
+		PushRegister(REG_IP);
+		SetRegister(REG_IP, GetMemory(mInterrupt << 2, 2));
+		Memory::MemoryOffset curMem = mMem.getOffset(GetRegister(REG_IP));
+		mNextInst = Instruction::ReadInstruction(curMem, this);
+		mInterrupt = -1;
+		mHalt = false;
+		return PROC_SUCCESS;
+	}
+
+	if(mHalt == true) {
+		return PROC_HALT;
+	}
+
 
 	//Ensure it exists and is valid
-	if(inst && inst->IsValid()) {
+	if(mNextInst && mNextInst->IsValid()) {
 		//Increment IP
-		SetRegister(REG_IP, GetRegister(REG_IP) + inst->GetLength());
+		SetRegister(REG_IP, GetRegister(REG_IP) + mNextInst->GetLength());
 
 #ifdef DEBUG
-		inst->AddLengthToDisasm();
+		mNextInst->AddLengthToDisasm();
+
+		std::cout << mNextInst->GetDisasm() << std::endl;
+
 #endif
-
-		std::cout << inst->GetDisasm() << std::endl;
-
 		//Execute
-        if((retVal = inst->Execute(this)) < 0) {
+		if((retVal = mNextInst->Execute(this)) < 0) {
+			delete mNextInst;
 			return PROC_ERR_INST;
 		}
+		delete mNextInst;
+
+		Memory::MemoryOffset curMem = mMem.getOffset(GetRegister(REG_IP));
+		mNextInst = Instruction::ReadInstruction(curMem, this);
 
 	} else {
 		return PROC_ERR_INV_INST;
@@ -369,4 +411,9 @@ void Processor::DeviceDump() {
 	for(unsigned int i = 0; i < mDevices.size(); i++) {
 		mDevices[i]->Dump();
 	}
+}
+
+void Processor::SetInterrupt(unsigned char n) {
+
+	mInterrupt = n;
 }

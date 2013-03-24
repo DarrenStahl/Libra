@@ -17,7 +17,7 @@
 class IPeripheral {
 
 	public:
-		~IPeripheral() {}
+		virtual ~IPeripheral() {}
 		virtual bool Put8(unsigned int port, unsigned int data) = 0;
 		virtual bool Put16(unsigned int port, unsigned int data) = 0;
 
@@ -25,12 +25,15 @@ class IPeripheral {
 		virtual unsigned int Get16(unsigned int port) = 0;
 
 		virtual void Dump() = 0;
+		virtual void Update() {}
 
 		virtual unsigned int GetType() = 0;
-		virtual std::string GetStr() = 0;
+		virtual std::string GetStr() { return ""; }
 
 		enum ePeriphTypes {
-			PERIPH_SCREEN
+			PERIPH_SCREEN,
+			PERIPH_KEYBOARD,
+			PERIPH_TIMER
 		};
 
 };

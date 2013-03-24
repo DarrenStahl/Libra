@@ -19,6 +19,8 @@
 #include "Register.hpp"
 #include "IPeripheral.hpp"
 
+class QTimer;
+
 enum eRegisters {
 	REG_AX,
 	REG_CX,
@@ -57,7 +59,7 @@ enum eFlags {
 	FLAGS_TF = 8,
 	FLAGS_IF = 9,
 	FLAGS_DF = 10,
-    FLAGS_OF = 11
+	FLAGS_OF = 11
 };
 
 
@@ -66,10 +68,12 @@ class Processor {
 	public:
 		int Initialize(unsigned int startAddr = 0x0000);
 		Processor(Memory& mem);
+		~Processor();
 		int Step();
 		void Stop();
 
 		static const int PROC_SUCCESS		=  0;
+		static const int PROC_HALT		=  1000;
 		static const int PROC_ERR_INV_ADDR 	= -1;
 		static const int PROC_ERR_INV_INST 	= -2;
 		static const int PROC_ERR_INST		= -3;
@@ -92,6 +96,9 @@ class Processor {
 		virtual void SetMemory(Memory::MemoryOffset& addr, unsigned int size, unsigned int val);
 		virtual void SetMemory(size_t offset, unsigned int size, unsigned int val);
 
+		void SetInterrupt(unsigned char n);
+		void Halt() { mHalt = true; }
+
 		void PushRegister(eRegisters reg);
 		void PushValue(unsigned int val);
 
@@ -107,6 +114,9 @@ class Processor {
 
 		const std::vector<IPeripheral*> & GetDevices() { return mDevices; }
 		const char* GetRegisterHex(eRegisters reg) const;
+		const Instruction* GetNextInstruction() const { return mNextInst; }
+
+		void SetTimer(QTimer* timer) { mTimer = timer; }
 
 		void ProcDump();
 		void MemDump();
@@ -122,6 +132,7 @@ class Processor {
 
 		Register	mRegisters[NumRegisters];
 		Memory&	mMem;
+		Instruction* mNextInst;
 
 		std::vector<IPeripheral*> mDevices;
 
@@ -130,5 +141,9 @@ class Processor {
 		IPeripheral* mLastDevice;
 
 		unsigned int mStartAddr;
+
+		int mInterrupt;
+		bool mHalt;
+		QTimer* mTimer;
 
 };

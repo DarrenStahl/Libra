@@ -59,7 +59,7 @@ int VM::LoadFlatFile(const char* filename) {
 		return VM_ERR_FOPEN;
 	}
 
-	int i = 0;
+	unsigned int i = 0;
 	while(!fin.eof()) {
 		if(((i + 1) * 1024) >= MEM_SIZE)
 			return VM_ERR_BIG_FILE;
@@ -97,7 +97,6 @@ int VM::LoadVirgoFile(const char* filename) {
 	fin >> addrStart;
 	fin >> bytesTotal;
 
-	mProc.Initialize(addrStart);
 
 	int i = 0;
 	unsigned int hexSize;
@@ -107,7 +106,7 @@ int VM::LoadVirgoFile(const char* filename) {
 	unsigned int addr;
 	unsigned int delay;
 	char line[512];
-	char text[20];
+	char text[TEXT_LEN];
 	memset(line, 0, 512);
 	fin.ignore(100, '\n');
 
@@ -176,8 +175,13 @@ int VM::LoadVirgoFile(const char* filename) {
 		}
 
 		//convert ascii hex into real hex
-		memset(text, 0, 20);
+		memset(text, 0, TEXT_LEN);
 		for(size_t j = 0; j < strlen(hex); j++) {
+			if(j == TEXT_LEN) {
+				delete hex;
+				mLoaded = false;
+				return VM_ERR_OVERFLOW;
+			}
 			if(hex[j] >= '0' && hex[j] <= '9') {
 				text[j/2] |= (hex[j] - '0') << (j % 2 == 0 ? 4 : 0);
 			}else if(toupper(hex[j])  >= 'A' && toupper(hex[j]) <= 'F') {
@@ -189,7 +193,7 @@ int VM::LoadVirgoFile(const char* filename) {
 		delete hex;
 
 		//Try to build a prefix
-		Prefix* pre = Prefix::GetPrefix((unsigned char*)text, 20);
+		Prefix* pre = Prefix::GetPrefix((unsigned char*)text, TEXT_LEN);
 		char* opLoc = text;
 		if(pre) {
 			opLoc += pre->GetLength();
@@ -203,7 +207,7 @@ int VM::LoadVirgoFile(const char* filename) {
 		dis.erase(0, dis.find_first_not_of(" \f\n\r\t\v"));
 
 		//Prefix with label
-		dis = label + dis;
+		dis = label + ('\t' + dis);
 
 		s.insert(0, text, hexSize);
 		if(dis.size() == 0 || (hexSize == 0 && label[0] == '\0'))
@@ -222,6 +226,8 @@ int VM::LoadVirgoFile(const char* filename) {
 
 	mLoaded = true;
 	mVirgo = true;
+
+	mProc.Initialize(addrStart);
 
 	return VM_SUCCESS;
 }
@@ -314,4 +320,36 @@ unsigned char VM::GetMemory(unsigned int addr) {
 		return mMem[addr];
 	}
 	return 0xFF;
+}
+
+void VM::AddBreakpoint(Breakpoint* bp) {
+	if(bp == 0)
+		return;
+
+	for(size_t i = 0; i < mBreakpoints.size(); i++) {
+		if(mBreakpoints[i]->GetIP() == bp->GetIP()) {
+			delete mBreakpoints[i];
+			mBreakpoints[i] = bp;
+			return;
+		}
+	}
+	mBreakpoints.push_back(bp);
+}
+
+void VM::RemoveBreakpoint(unsigned int addr) {
+	for(size_t i = 0; i < mBreakpoints.size(); i++) {
+		if(mBreakpoints[i]->GetIP() == addr) {
+			mBreakpoints.erase(mBreakpoints.begin() + i);
+			break;
+		}
+	}
+}
+
+Breakpoint* VM::FindBreakpoint(unsigned int addr) {
+	for(size_t i = 0; i < mBreakpoints.size(); i++) {
+		if(mBreakpoints[i]->GetIP() == addr) {
+			return mBreakpoints[i];
+		}
+	}
+	return 0;
 }

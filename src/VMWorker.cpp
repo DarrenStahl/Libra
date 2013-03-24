@@ -1,4 +1,6 @@
 #include "VMWorker.hpp"
+#include "peripherals/Timer.hpp"
+#include <fstream>
 #define EVER ;;
 
 VMWorker::VMWorker(VM* vm) : mVM(vm), mPaused(false)
@@ -8,31 +10,36 @@ VMWorker::VMWorker(VM* vm) : mVM(vm), mPaused(false)
 
 void VMWorker::run() {
 	int err;
-	int updateCtr = 0;
 	mPaused = false;
 	if(mVM && mVM->isLoaded()) {
+		unsigned int start = Timer::GetSystemTime();
+		unsigned int end = start;
+		unsigned int instCount = 0;
 		for(EVER) {
 			//Set by a different thread
 			if(mPaused) {
 				emit paused();
 				return;
 			}
-
+			instCount++;
 			if((err = mVM->Step()) < 0) {
 				break;
 			} else if (err == VM::VM_BREAKPOINT) {
 				emit procReturn(err);
 				emit breakpoint();
 				return;
-			} else if(err > 0) {
-				emit procReturn(err);
+			} else if (err == Processor::PROC_HALT) {
+				if(!mVM->GetProc().GetFlag(FLAGS_IF)) {
+					end = Timer::GetSystemTime();
+					std::ofstream fout("time.log");
+					fout << "Instructions: " << instCount << std::endl;
+					fout << "Time (msec): " << end - start << std::endl;
+					fout << "KIPS: " << (end - start == 0 ? 0 : instCount / (end - start)) << std::endl;
+					fout.close();
+					emit paused();
+					return;
+				}
 			}
-			mVM->notifyReadCallbacks();
-			mVM->notifyWriteCallbacks();
-			//Only update the GUI every 300 instructions (~0.005 seconds)
-			updateCtr = (updateCtr + 1) % 300;
-			if(updateCtr == 0)
-				emit stepDone();
 		}
 		emit error(err);
 	} else {
@@ -40,17 +47,6 @@ void VMWorker::run() {
 	}
 }
 
-void VMWorker::step() {
-	if(mVM && mVM->isLoaded()) {
-		//mVM->Step();
-		emit stepDone();
-	} else {
-		emit quit();
-	}
-}
-
 void VMWorker::pause() {
-	if(mVM && mVM->isLoaded()) {
 		mPaused = true;
-	}
 }

@@ -13,11 +13,21 @@
 #include <QApplication>
 #include "MemWnd.hpp"
 
+#ifdef QICO_NEEDED
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(qico)
+#endif
+
 int main(int argc, char* argv[]) {
 
-    QApplication a(argc, argv);
-    MemWnd w;
-    w.show();
+	QApplication a(argc, argv);
+	MemWnd* w = 0;
+	if(argc > 1) {
+		w = new MemWnd(argv[argc - 1]);
+	} else {
+		w = new MemWnd();
+	}
+	w->show();
 
-    return a.exec();
+	return a.exec();
 }

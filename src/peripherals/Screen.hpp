@@ -27,9 +27,12 @@ class Screen : public IPeripheral {
 
 		virtual void Dump();
 
-        unsigned int GetType() { return PERIPH_SCREEN; }
+		unsigned int GetType() { return PERIPH_SCREEN; }
 
-        std::string GetStr();
+		std::string GetStr();
+
+		unsigned int GetWidth() { return NUM_COLS; }
+		unsigned int GetHeight() { return NUM_ROWS; }
 
 	protected:
 
@@ -40,7 +43,8 @@ class Screen : public IPeripheral {
 		static const unsigned int NUM_COLS = 40;
 
 		//third index is for character data / color data
-		char mScreen[NUM_COLS][NUM_ROWS][2];
+		char mScreen[NUM_COLS * NUM_ROWS];
+		char mColor[NUM_COLS * NUM_ROWS];
 
 		unsigned int mCurX, mCurY;
 		unsigned int mFirstRow;

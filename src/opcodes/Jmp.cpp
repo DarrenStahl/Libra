@@ -42,7 +42,7 @@ Instruction* Jmp::CreateInstruction(Memory::MemoryOffset& memLoc, Processor* pro
 			if(size == 2) {
 				val += *(opLoc + 2) << 8;
 			}
-			Operand* dst = new ImmediateOperand(val, size);
+			Operand* dst = new ImmediateOperand(val, size, (opLoc + 1).getOffset());
 			snprintf(buf, 65, "JMP %s", dst->GetDisasm().c_str());
 			GETINST(preLen + 1 + size);
 			newJmp = new Jmp(pre, buf, inst, (int)*opLoc);
@@ -51,8 +51,8 @@ Instruction* Jmp::CreateInstruction(Memory::MemoryOffset& memLoc, Processor* pro
 		}
 		case JMP_MOD16:
 		//case JMP_MOD16_16
-		if(((*(opLoc + 1) & 0x38) >> 3) == JMP_SUB_OPCODE || 
-				((*(opLoc + 1) & 0x38) >> 3) == JMP_SUB_SEG_OPCODE)
+		if(((unsigned int)((*(opLoc + 1) & 0x38) >> 3) == JMP_SUB_OPCODE) ||
+				((unsigned int)((*(opLoc + 1) & 0x38) >> 3) == JMP_SUB_SEG_OPCODE))
 		{
 			Operand* dst = ModrmOperand::GetModrmOperand(proc, opLoc, ModrmOperand::MOD, 2);
 			snprintf(buf, 65, "JMP %s", dst->GetDisasm().c_str());
@@ -68,7 +68,7 @@ Instruction* Jmp::CreateInstruction(Memory::MemoryOffset& memLoc, Processor* pro
 				(*(opLoc + 2) << 0x08) + ((
 				(*(opLoc + 3)) +
 				(*(opLoc + 4) << 0x08)) << 0x4);
-			Operand* dst = new ImmediateOperand(val & 0xFFFF, 2);
+			Operand* dst = new ImmediateOperand(val & 0xFFFF, 4, (opLoc + 1).getOffset());
 			snprintf(buf, 65, "JMP %s", dst->GetDisasm().c_str());
 			GETINST(preLen + 4);
 			newJmp = new Jmp(pre, buf, inst, (int)*opLoc);

@@ -44,7 +44,7 @@ Instruction* IMul::CreateInstruction(Memory::MemoryOffset& memLoc, Processor* pr
 		case IMUL_MOD8:
 		case IMUL_MOD16:
 		{
-			if((((*(opLoc + 1) & 0x38) >> 3) != IMUL_SUB_OPCODE) || twoByte) {
+			if(((unsigned int)((*(opLoc + 1) & 0x38) >> 3) != IMUL_SUB_OPCODE) || twoByte) {
 				return 0;
 			}
 
@@ -80,7 +80,7 @@ Instruction* IMul::CreateInstruction(Memory::MemoryOffset& memLoc, Processor* pr
 			if(size == 2) {
 				val += (int)*(opLoc + 3 + dst->GetBytecodeLen() + src->GetBytecodeLen());
 			}
-			Operand* op3 = new ImmediateOperand(val, size);
+			Operand* op3 = new ImmediateOperand(val, size, (opLoc + 2 + dst->GetBytecodeLen()).getOffset());
 			snprintf(buf, 65, "IMUL %s, %s, %s", dst->GetDisasm().c_str(), src->GetDisasm().c_str(), op3->GetDisasm().c_str());
 			GETINST(preLen + 2 + dst->GetBytecodeLen() +
 					src->GetBytecodeLen() + op3->GetBytecodeLen());

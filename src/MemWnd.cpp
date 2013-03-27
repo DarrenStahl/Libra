@@ -32,6 +32,7 @@ MemWnd::MemWnd(const char* const file, QWidget *parent) :
 	QKbdFilter* kbdFilter = new QKbdFilter();
 	this->connect(kbdFilter, SIGNAL(KeyEvent(QKeyEvent*)), this, SLOT(KeyEvent(QKeyEvent*)));
 	this->installEventFilter(kbdFilter);
+	this->setWindowTitle("Libra - 8086 Emulator");
 
 
 	//Create a temporary screen, because the processor isn't initialized until a file is loaded
@@ -84,6 +85,7 @@ MemWnd::MemWnd(const char* const file, QWidget *parent) :
 	connect(mVMWorker, SIGNAL(error(int)), this, SLOT(workerRunError(int)));
 	connect(mVMWorker, SIGNAL(quit()), mVMWorker, SLOT(deleteLater()));
 	connect(mVMWorker, SIGNAL(procReturn(int)), this, SLOT(workerProcReturn(int)));
+	connect(mVMWorker, SIGNAL(stopped()), this, SLOT(workerStopped()));
 	connect(this, SIGNAL(vmResume()), mVMWorker, SLOT(run()));
 	connect(this, SIGNAL(vmPause()), mVMWorker, SLOT(pause()));
 
@@ -296,7 +298,7 @@ void MemWnd::loadFile(bool newFile) {
 
 	//Sanity check for mFile
 	if(mFile != "") {
-		mVM.LoadVirgoFile(mFile.toStdString().c_str());
+		int err = mVM.LoadVirgoFile(mFile.toStdString().c_str());
 
 		//Ensure the loading succeeded
 		if(mVM.isLoaded()) {
@@ -318,6 +320,8 @@ void MemWnd::loadFile(bool newFile) {
 
 			//Update all the other controls
 			UpdateGui();
+		} else {
+			QMessageBox::critical(this, "File loading failed", "Loading the file \"" + mFile + "\" Failed.\n" + mVM.GetErrStr(err));
 		}
 	}
 }
@@ -363,6 +367,10 @@ void MemWnd::workerProcReturn(int err) {
 	if(err == Instruction::PERIPH_WRITE) {
 		UpdateScreen();
 	}
+}
+//Program's processor halted
+void MemWnd::workerStopped() {
+	QMessageBox::information(this, "Halt Encountered", "HLT was encountered, execution is terminated.");
 }
 
 /*
@@ -566,14 +574,23 @@ void MemWnd::EnableRun() {
  * Peripheral Event Handlers
  */
 
+#define ENTER_KEY_NL 0x0A
+#define ENTER_KEY_CR 0x0D
+
 void MemWnd::KeyEvent(QKeyEvent* evt) {
 	//Search for a keyboard
 	unsigned int numDevices = mVM.GetDevices().size();
 	for(unsigned int i = 0; i < numDevices; i++) {
 		if(mVM.GetDevices().at(i)->GetType() == IPeripheral::PERIPH_KEYBOARD) {
 			//found the keyboard, dispatch the keypress event
-			((Keyboard*)mVM.GetDevices().at(i))->Update(evt->key(), evt->type() == QEvent::KeyPress);
-			break;
+			if (evt->text().toAscii().size() > 0) {
+				char key = evt->text().toAscii().at(0);
+				if (key == ENTER_KEY_CR) {
+					key = ENTER_KEY_NL; //Convert Enter's Carriage Return to Newline
+				}
+				((Keyboard*)mVM.GetDevices().at(i))->Update(key, evt->type() == QEvent::KeyPress);
+				break;
+			}
 		}
 	}
 }

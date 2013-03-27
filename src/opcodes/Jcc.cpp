@@ -173,8 +173,11 @@ int Jcc::Execute(Processor* proc) {
 	if(jmp) {
 		unsigned int newIP = proc->GetRegister(REG_IP);
 		unsigned int relAddr = src->GetValue();
-		newIP += relAddr;
-		newIP &= src->GetBitmask();
+		if (relAddr & 0x80)
+			newIP -= 0xFF & (~relAddr + 1);
+		else 
+			newIP += relAddr;
+		newIP &= 0xFFFF;
 		proc->SetRegister(REG_IP, newIP);
 	}
 
